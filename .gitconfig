@@ -1,0 +1,9 @@
+[init]
+	defaultBranch = main
+[user]
+	email = weiss.lukas03@gmail.com
+	name = Lukas Weissenhorn
+[safe]
+	directory = /opt/flutter
+[pull]
+	rebase = false
