@@ -1,78 +1,48 @@
-vim.opt.relativenumber = true
-vim.opt.number = true
-vim.opt.clipboard = { 'unnamed', 'unnamedplus' }
-vim.opt.autoindent = true
-vim.opt.expandtab = false 
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.list = true
-vim.opt.mouse = 'a'
-vim.opt.encoding = 'UTF-8'
-vim.opt.scrolloff = 10
+-- global settings
+local set = vim.opt
+set.number = true
+set.clipboard = { 'unnamed', 'unnamedplus' }
+set.autoindent = true
+set.expandtab = false
+set.tabstop = 4
+set.shiftwidth = 4
+set.list = true
+set.mouse = 'a'
+set.encoding = 'UTF-8'
+set.scrolloff = 20
 
---vim.api.nvim_exec([[set guifont="SauceCodePro Nerd Font Mono"]], false)
+-- i do not know if this is necessary
+-- unix lile endings
+--vim.api.nvim_exec([[autocmd BufWritePre * set ff=unix]], false)
+--vim.api.nvim_exec([[command Hexon :%!xxd]], false)
+--vim.api.nvim_exec([[command Hexoff :%!xxd -r]], false)
 
---Unix lile endings
-vim.api.nvim_exec([[autocmd BufWritePre * set ff=unix]], false)
-
-vim.api.nvim_exec([[command Hexon :%!xxd]], false)
-vim.api.nvim_exec([[command Hexoff :%!xxd -r]], false)
-
-
+-- package manager
+vim.cmd [[packadd packer.nvim]]
 require('packer').startup(function()
-
+	-- packer
 	use 'wbthomason/packer.nvim'
 
-	--colorscheme
-	use 'morhetz/gruvbox'
+	-- colorscheme
 	use { 'folke/tokyonight.nvim', branch = 'main' }
-	use 'Nis5l/niscolor-vim'
-	use 'EdenEast/nightfox.nvim'
 
-	--visual
+	-- lualine
 	use {
-		'hoob3rt/lualine.nvim',
-		config = function()
-			require('lualine').setup {
-			  options = {theme = 'tokyonight'}
-			}
-		end,
+		'nvim-lualine/lualine.nvim',
+		requires = { 'kyazdani42/nvim-web-devicons', opt = true }
 	}
-	use {
-		'p00f/nvim-ts-rainbow',
-		requires = { "nvim-treesitter/nvim-treesitter" },
-	}
-
-	use {
-		'kyazdani42/nvim-web-devicons',
-		config = function()
-			require'nvim-web-devicons'.setup {
-				default = true;
-			}
-		end
-	}
-
-	--autocomplete/format
+	
+	-- language server
 	use 'neovim/nvim-lspconfig'
-	--use 'nvim-lua/lsp_extensions.nvim'
-	use {
-		'folke/trouble.nvim',
-		config = function()
-			require("trouble").setup{}
-		end,
-	}
-
 	use { 'ms-jpq/coq_nvim', branch = 'coq' }
---	use { 'ms-jpq/coq.artifacts', branch = 'artifacts' }
 
-	--git
+	-- show git diff
 	use 'mhinz/vim-signify'
-	use 'f-person/git-blame.nvim'
 
-	--Telecope
+	-- treesitter
 	use {
 		'nvim-treesitter/nvim-treesitter',
-		run = [[:TSUpdate]],
+		run =[[:TSUpdate]],
 		config = function()
 			require('nvim-treesitter.configs').setup {
 				ensure_installed = "all",
@@ -86,28 +56,35 @@ require('packer').startup(function()
 			}
 		end,
 	}
+
+	-- don't know if useful
 	use 'nvim-lua/popup.nvim'
 	use 'nvim-lua/plenary.nvim'
+
+	-- telescope
 	use 'nvim-telescope/telescope.nvim'
-
-	--misc
-	use 'b3nj5m1n/kommentary'
+	
+	-- misc
 	use 'ap/vim-css-color'
-
+	use {
+		'kyazdani42/nvim-web-devicons',
+		config = function()
+			require'nvim-web-devicons'.setup {
+				default = true;
+			}
+		end
+	}
 	use {
 		'iamcco/markdown-preview.nvim',
 		config = 'vim.call("mkdp#util#install")'
 	}
-	use 'AndrewRadev/bufferize.vim'
 	use {
 		"max397574/better-escape.nvim",
 		config = function()
 			require("better_escape").setup()
 		end,
 	}
-
-	use {
-		"numtostr/FTerm.nvim",
+	use { "numtostr/FTerm.nvim",
 		config = function()
 			require'FTerm'.setup({
 				border = 'double',
@@ -118,17 +95,8 @@ require('packer').startup(function()
 			})
 		end,
 	}
-
-	use { "alec-gibson/nvim-tetris", branch = 'dev' }
 	use "petertriho/nvim-scrollbar"
-	use {
-		"ianding1/leetcode.vim",
-		config = function()
-		end,
-	}
-
-	use { "ray-x/lsp_signature.nvim" }
-	use { "johngrib/vim-game-snake" }
+	use "ray-x/lsp_signature.nvim"
 	use {
 	  "narutoxy/dim.lua",
 	  requires = { "nvim-treesitter/nvim-treesitter", "neovim/nvim-lspconfig" },
@@ -136,61 +104,52 @@ require('packer').startup(function()
 		require('dim').setup({})
 	  end
 	}
-	--[[ use {
-	  'romgrk/barbar.nvim',
-	  requires = {'kyazdani42/nvim-web-devicons'}
-	} ]]
-	use { "neomake/neomake" }
-
-	use {
-		"williamboman/mason.nvim",
-		"williamboman/mason-lspconfig.nvim",
-	}
-
-	use { 'dstein64/vim-startuptime' }
-
-	use { 'mechatroner/rainbow_csv' }
 end)
 
-vim.g.gitblame_enabled = 0
-vim.g.gitblame_message_template = '<sha> • <summary> • <date> • <author>'
+-- colorscheme
+vim.cmd[[colorscheme tokyonight]]
+set.termguicolors = true
 
-vim.g.leetcode_browser = "firefox"
-vim.g.leetcode_solution_filetype = "c"
+set.updatetime = 750
 
-vim.opt.termguicolors = true
+-- setup lualine
+require('lualine').setup({
+	options = { theme = 'tokyonight' }
+})
 
---signify
-vim.opt.updatetime = 100
+-- keybindings
+local map = vim.api.nvim_set_keymap
+local opts1 = { noremap = true, silent = true }
+local opts2 = { silent = true }
 
-vim.g.rainbow_active = 1
+map('n', '<C-z>', '<CMD>lua require("FTerm").toggle()<CR>', opts2)
+map('t', '<C-z>', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>', { silent = true})
+map('n', '<TAB>', ':tabn<CR>', opts2)
+map('n', '<C-TAB>', ':tabp<CR>', opts2)
+map('n', '<F8>', ':TagbarToggle<CR>', opts2)
+map('n', 't', ':Telescope find_files<CR>', opts2)
+map('n', '<C-t>', ':Telescope live_grep<CR>', opts2)
 
-vim.cmd[[colorscheme tokyonight-night]]
-
-vim.api.nvim_set_keymap('n', '<C-z>', '<CMD>lua require("FTerm").toggle()<CR>', { silent = true })
-vim.api.nvim_set_keymap('t', '<C-z>', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>', { silent = true})
-vim.api.nvim_set_keymap('n', '<TAB>', ':tabn<CR>', { silent = true })
-vim.api.nvim_set_keymap('n', '<C-TAB>', ':tabp<CR>', { silent = true })
-vim.api.nvim_set_keymap('n', '<F8>', ':TagbarToggle<CR>', { silent = true })
-vim.api.nvim_set_keymap('n', 't', ':Telescope find_files<CR>', { silent = true })
-vim.api.nvim_set_keymap('n', '<C-t>', ':Telescope live_grep<CR>', { silent = true })
-
-vim.api.nvim_set_keymap('', '<C-j>', '<C-w><down>' , { silent = true })
-vim.api.nvim_set_keymap('', '<C-k>', '<C-w><up>'   , { silent = true })
-vim.api.nvim_set_keymap('', '<C-h>', '<C-w><left>' , { silent = true })
-vim.api.nvim_set_keymap('', '<C-l>', '<C-w><right>', { silent = true })
+-- disable arrow keys
+--map('', '<C-j>', '<C-w><down>' , opts2)
+--map('', '<C-k>', '<C-w><up>'   , opts2)
+--map('', '<C-h>', '<C-w><left>' , opts2)
+--map('', '<C-l>', '<C-w><right>', opts2)
+map('n', '<Up>', '<Nop>' , opts2)
+map('n', '<Down>', '<Nop>'   , opts2)
+map('n', '<Left>', '<Nop>' , opts2)
+map('n', '<Right>', '<Nop>', opts2)
 
 --Exit terminal mode
-vim.api.nvim_set_keymap('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true } )
+map('t', '<Esc>', '<C-\\><C-n>', opts1 )
 
 --Keep visual selection
-vim.api.nvim_set_keymap('v', '>', '>gv', { silent = true })
-vim.api.nvim_set_keymap('v', '<', '<gv', { silent = true })
+map('v', '>', '>gv', opts2)
+map('v', '<', '<gv', opts2)
 
-vim.api.nvim_set_keymap('n', 'gd', ':lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', 'gb', '<C-^>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', 'gh', ':lua vim.lsp.buf.hover()<CR>', { noremap = true, silent = true })
-
+map('n', 'gd', ':lua vim.lsp.buf.definition()<CR>', opts1 ) 
+map('n', 'gb', '<C-^>', opts1 )
+map('n', 'gh', ':lua vim.lsp.buf.hover()<CR>', opts1 )
 
 vim.g.coq_settings = {
 	auto_start = 'shut-up',
@@ -203,31 +162,15 @@ vim.g.coq_settings = {
 --	["display.pum.x_truncate_len"] = 1000,
 }
 
-require("mason").setup()
-require("mason-lspconfig").setup({
-    --ensure_installed = { "tsserver", "rust_analyzer", "jdtls", "cssls" }
-    ensure_installed = { "rust_analyzer" }
-})
-
-local lsp = require "lspconfig"
-local coq = require "coq"
-
-local setup = coq.lsp_ensure_capabilities;
---local setup = function()
---  return {}
---end
-
-lsp.rust_analyzer.setup(setup())
-lsp.tsserver.setup(setup())
-lsp.vimls.setup(setup())
-lsp.ocamlls.setup(setup())
-lsp.pylsp.setup(setup())
-lsp.intelephense.setup(setup({cmd = { "intelephense", "--stdio" }}))
-lsp.jdtls.setup(setup())
-lsp.ccls.setup(setup())
-lsp.cssls.setup(setup())
-
 require("lsp_signature").setup({})
+
+-- html lsp
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+require'lspconfig'.html.setup {
+  capabilities = capabilities,
+}
 
 local colors = require("tokyonight.colors").setup()
 
@@ -244,9 +187,4 @@ require("scrollbar").setup({
 		Misc = { color = colors.purple },
 	}
 })
-
---https://github.com/ray-x/lsp_signature.nvim
---https://github.com/mhinz/vim-crates
---https://github.com/RRethy/vim-illuminate
---https://github.com/jbyuki/instant.nvim
 
