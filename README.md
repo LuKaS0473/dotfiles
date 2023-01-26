@@ -28,6 +28,6 @@ I am using [yadm](https://github.com/TheLocehiliosan/yadm) as my dotfiles manage
 #### x-server config
 * `.xinitrc`
 
-#### git
-* `.gitconfig`
-
+#### important files directory 
+* `50-synaptic.conf` for natural scroll (touchpad); located at `/etc/X11/xorg.conf.d/`
+* `picom.conf` for transparent terminal; located at `/etc/xdg/`
