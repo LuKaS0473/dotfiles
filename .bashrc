@@ -4,6 +4,7 @@
 
 export PATH="$PATH:HOME/bin"
 export PATH=/home/lukas/.nimble/bin:$PATH
+export PATH="$PATH:/home/lukas/go/bin"
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
