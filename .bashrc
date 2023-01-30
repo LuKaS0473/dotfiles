@@ -19,6 +19,10 @@ PS1=' \w > '
 
 export LANG=C 
 
+# Causes bash to append to history instead of overwriting it so if you start a new terminal, you have old session history
+shopt -s histappend
+PROMPT_COMMAND='history -a'
+
 # Load Angular CLI autocompletion.
 source <(ng completion script)
 source /usr/share/nvm/init-nvm.sh
